@@ -21,7 +21,8 @@ class Auth:
         path_slashed = path if path.endswith('/') else path + '/'
 
         for each_path in excluded_paths:
-            slashed_excluded_paths = each_path if each_path.endswith('/') else each_path + '/'
+            slashed_excluded_paths = each_path if each_path.endswith('/')\
+                    else each_path + '/'
             if path_slashed == slashed_excluded_paths:
                 return False
 
