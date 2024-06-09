@@ -13,9 +13,10 @@ import os
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
-auth = None
 
+auth = None
 AUTH_TYPE = getenv('AUTH_TYPE',None)
+
 if AUTH_TYPE == "auth":
     auth = Auth()
 
@@ -39,6 +40,7 @@ def forbidden(error) -> str:
     """ Forbids access to a resource
     """
     return jsonify({"error": "Forbidden"}), 403
+
 
 @app.before_request
 def before_request_func():
