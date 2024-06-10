@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Basic Auth
 """
-import base64i
+import base64
 from models.user import User
 from typing import TypeVar, Tuple, Optional
 from api.v1.auth.auth import Auth
