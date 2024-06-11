@@ -154,3 +154,23 @@ class BasicAuth(Auth):
         # Step 5: Retrieve the User object based on the credentials
         user = self.user_object_from_credentials(user_email, user_pwd)
         return user
+
+    def extract_user_credentials(self, decoded_base64_authorization_header: str) -> Tuple[Optional[str], Optional[str]]:
+        """
+        Extracts the user email and password from the Base64 decoded value.
+
+        Args:
+            decoded_base64_authorization_header (str): Base64 decoded value
+
+        Returns:
+            Tuple[str, str]: user email and password if valid, otherwise (None, None)
+        """
+        if not decoded_base64_authorization_header or not isinstance(decoded_base64_authorization_header, str):
+            return None, None
+
+        # Split only at the first occurrence of the colon
+        try:
+            email, password = decoded_base64_authorization_header.split(':', 1)
+            return email, password
+        except ValueError:
+            return None, None
