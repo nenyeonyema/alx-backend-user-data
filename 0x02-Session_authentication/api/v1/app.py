@@ -11,16 +11,38 @@ from flask_cors import (CORS, cross_origin)
 import os
 
 app = Flask(__name__)
-app.register_blueprint(app_views)
 CORS(app)
 
-auth = BasicAuth()
+auth = None
+auth_type = os.getenv('AUTH_TYPE', 'auth')
+
+if auth_type == 'basic_auth':
+    auth = BasicAuth()
+else:
+    auth = Auth()
 
 
 @app.before_request
 def before_request():
     """ Handles request before routing
     """
+    if auth is None:
+        return
+
+    excluded_paths = [
+            '/api/v1/status/',
+            '/api/v1/unauthorized/',
+            '/api/v1/forbidden/'
+            ]
+
+    if not auth.require_auth(request.path, excluded_paths):
+        return
+
+    if auth.authorization_header(request) is None:
+        abort(401)
+
+    if auth.current_user(request) is None:
+        abort(403)
     request.current_user = auth.current_user(request)
 
 
