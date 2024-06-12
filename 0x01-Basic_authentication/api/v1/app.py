@@ -29,6 +29,8 @@ else:
 
 @app.before_request
 def before_request_func():
+    """ Handles request authentication before routing
+    """
     if auth is None:
         return
 
