@@ -9,7 +9,7 @@ from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 from user import User
 from user import Base
-from typing import Optional
+from typing import Optional, Dict, Any
 
 
 class DB:
@@ -52,18 +52,18 @@ class DB:
     
         return new_user
 
-    def find_user_by(self, **kwargs) -> User:
-        """Find a user by arbitrary keyword arguments.
+    def find_user_by(self, **kwargs: Dict[str, Any]) -> User:
+        """ Find a user by arbitrary keyword arguments.
         
-        Args:
-            **kwargs: Arbitrary keyword arguments to filter the query.
+            Args:
+                **kwargs (Dict[str, Any]): Arbitrary keyword arguments to filter the query.
         
-        Returns:
-            User: The found User object.
+            Returns:
+                User: The found User object.
         
-        Raises:
-            NoResultFound: If no user is found matching the query.
-            InvalidRequestError: If invalid query arguments are passed.
+            Raises:
+                NoResultFound: If no user is found matching the query.
+                InvalidRequestError: If invalid query arguments are passed.
         """
         try:
             user = self._session.query(User).filter_by(**kwargs).one()
